@@ -1,3 +1,6 @@
+body{
+    font-family: Arial, sans-serif;
+}
 .nav-bar{
     display: flex;
     gap: 220px;
@@ -32,6 +35,10 @@ a{
     color: black;
     opacity: 0.7;
     font-size: 17px;
+    transition: all 0.6s ease;
+}
+a:hover{
+    color:blue;
 }
 .active{
     color: blue;
@@ -353,4 +360,5 @@ padding-left: 100px;
     padding-left: 450px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
+
 }
