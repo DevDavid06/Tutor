@@ -16,10 +16,11 @@ i{
 }
 .ttxt{
     display: flex;
-    gap: 10px;
+    gap: 15px;
+    align-items: center;
 }
 .pnn2{
-    font-size: 20px;
+    font-size: 25px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bolder;
 }
@@ -362,3 +363,4 @@ padding-left: 100px;
     font-size: 15px;
 
 }
+
