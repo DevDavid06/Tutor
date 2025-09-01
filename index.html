@@ -1,40 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tutor Website</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome (kept same version you used) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style>
+    /* =========================
+       Reset & base
+       ========================= */
+    :root{
+      --bg: #f7fbff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent-1: linear-gradient(90deg,#ff7a18,#af002d 50%,#7a00ff);
+      --card-glow: rgba(122,0,255,0.08);
+      --accent-2: #ffd166;
+      --accent-3: #6ee7b7;
+      --max-width: 1200px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html {scroll-behavior: smooth}
+    body{
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+    }
+    img{max-width:100%;display:block;height:auto}
+
+    /* =========================
+       NAVBAR (fixed)
+       ========================= */
+    .nav-bar{
+      position:fixed;
+      top:0; left:0; right:0;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:12px 20px;
+      background: var(--accent-1);
+      color:#fff;
+      z-index: 1200;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
+
+    /* logo area */
+    .nav-bar .ttxt{ display:flex; align-items:center; gap:12px; }
+    .ttxt .spn1 .bold-icon{
+      width:46px;height:46px;display:flex;align-items:center;justify-content:center;
+      background: rgba(255,255,255,0.12); border-radius:10px; font-size:22px; color:#fff;
+    }
+    .ttxt .pnn2{
+      font-family:'Montserrat', sans-serif;
+      font-weight:700;
+      font-size:20px;
+      letter-spacing:.4px;
+    }
+
+    /* nav items */
+    .nav-item { display:flex; align-items:center; gap:14px; }
+    .nav-item a {
+      color:rgba(255,255,255,0.95);
+      padding:8px 10px;
+      border-radius:8px;
+      font-weight:500;
+      transition: background .18s ease, transform .12s ease;
+      font-size:15px;
+    }
+    .nav-item a:hover{ background: rgba(255,255,255,0.08); transform:translateY(-2px) }
+    .nav-item a.active{ background: rgba(255,255,255,0.12); box-shadow: 0 4px 14px rgba(0,0,0,0.12) }
+
+    /* right-side actions */
+    .next{ display:flex; gap:10px; align-items:center; margin-left:12px; }
+    .next .red{ padding:8px 12px; border-radius:8px; background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.2) }
+    .next .orange .blue{ padding:8px 12px; border-radius:8px; background:#fff; color:var(--text); font-weight:700 }
+
+    /* create top offset so content not hidden behind fixed nav */
+    main{ padding-top:78px } /* adjust if nav height changes */
+
+    /* =========================
+       announcement bar (other)
+       ========================= */
+    .other{
+      background: linear-gradient(90deg, rgba(255,182,66,0.12), rgba(122,0,255,0.06));
+      padding:10px 20px;
+      text-align:center;
+      color: #333;
+      font-weight:500;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .other .active{ color:var(--accent-2); font-weight:700 }
+
+    /* =========================
+       HERO / CONTAINED SECTION
+       ========================= */
+    .contained{
+      max-width: var(--max-width);
+      margin: 36px auto;
+      padding: 24px;
+      display:flex;
+      gap:28px;
+      align-items:center;
+      justify-content:space-between;
+      background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.95));
+      border-radius:18px;
+      box-shadow: 0 8px 30px rgba(10,10,20,0.05);
+    }
+
+    /* left column (text) */
+    .move{ flex:1; min-width:260px; padding:8px 6px; }
+    .spn2{ display:inline-block; font-weight:600; color:#9333ea; background:rgba(147,51,234,0.08); padding:6px 10px; border-radius:8px; font-size:14px }
+    .spn3{ display:block; margin-top:12px; font-family:'Montserrat',sans-serif; font-size:40px; line-height:1.02; color:#111 }
+    .great .spn4{ display:block; margin-top:14px; color:var(--muted); font-size:15px; max-width:600px }
+
+    .content{ margin-top:18px; display:flex; align-items:center; gap:16px; flex-wrap:wrap }
+    .content button{
+      background: linear-gradient(90deg,#ff7a18,#ffd166);
+      border:none; padding:12px 20px; border-radius:10px; font-weight:700; cursor:pointer;
+      box-shadow: 0 8px 18px rgba(255,122,24,0.18);
+    }
+    .round{
+      width:48px; height:48px; display:flex; align-items:center; justify-content:center;
+      border-radius:50%; background: linear-gradient(90deg,#7a00ff,#af00ff); color:#fff; font-size:18px; cursor:pointer;
+      box-shadow: 0 6px 18px rgba(122,0,255,0.18)
+    }
+    .spn5{ color:var(--muted); font-size:14px }
+
+    /* right column (image) */
+    .img{ flex:1; display:flex; justify-content:center; align-items:center; min-width:260px; }
+    .img img{ width:92%; border-radius:14px; box-shadow: 0 18px 40px rgba(10,10,30,0.06); }
+
+    /* =========================
+       STATS - stage2
+       ========================= */
+    .stage2{ margin-top:28px; }
+    .in-it{
+      max-width:var(--max-width);
+      margin: 0 auto;
+      display:grid;
+      grid-template-columns: repeat(4,1fr);
+      gap:18px;
+      padding:18px;
+      align-items:center;
+      text-align:center;
+    }
+    .in-it .yes1{ font-family:'Montserrat',sans-serif; font-size:26px; color:#111 }
+    .in-it .yes2{ color:var(--muted); margin-top:6px; font-size:14px }
+
+    /* =========================
+       Why Choose Us (page)
+       ========================= */
+    .page{ text-align:center; margin-top:28px }
+    .page2{ font-family:'Montserrat',sans-serif; font-size:28px; color:#111 }
+    .page3{ color:var(--muted); font-size:16px }
+    .page4{ margin-top:8px }
+
+    /* =========================
+       Features grid (within)
+       ========================= */
+    .within{
+      max-width: var(--max-width);
+      margin: 18px auto;
+      padding: 8px 18px 32px;
+      display:grid;
+      grid-template-columns: repeat(4,1fr);
+      gap:18px;
+    }
+    .nxt-stg{
+      background:#fff; padding:18px; border-radius:12px; box-shadow: 0 8px 24px rgba(15,15,30,0.03);
+      text-align:center;
+    }
+    .nxt-stg .who{ display:block; margin-top:12px; font-weight:700; font-family:'Montserrat',sans-serif; color:#111 }
+    .nxt-stg .wow{ margin-top:8px; color:var(--muted); font-size:14px }
+
+    .icon1, .icon2, .icon3, .icon4 {
+      display:inline-block; width:56px; height:56px; border-radius:12px;
+      background: linear-gradient(90deg,#ffd166,#ff7a18);
+      color:#fff; display:flex; align-items:center; justify-content:center; font-size:18px;
+      box-shadow: 0 8px 18px rgba(255,122,24,0.14)
+    }
+
+    /* =========================
+       Third container blocks (thd-cont)
+       ========================= */
+    .thd-cont{
+      max-width: var(--max-width);
+      margin: 20px auto;
+      display:flex; gap:22px; align-items:center; padding:18px;
+      flex-wrap:wrap;
+    }
+    .thd1{ flex:1; min-width:260px }
+    .thd-cont1{ flex:1; min-width:280px }
+    .thd3{ font-family:'Montserrat',sans-serif; font-size:20px; color:#111 }
+    .thd4{ font-weight:700; font-size:22px; display:block; margin-top:6px }
+    .thd5{ color:var(--muted); font-size:15px; display:block; line-height:1.5 }
+
+    .bttn button, .btt button{ margin-top:14px; background: linear-gradient(90deg,#6ee7b7,#3b82f6); padding:12px 18px; border:none; border-radius:10px; color:#fff; font-weight:700; cursor:pointer }
+
+    /* =========================
+       Subjects / fth / join grids
+       ========================= */
+    .frth-cont{ background: linear-gradient(90deg,#fff7ed,#fff1f2); padding:34px 20px; margin-top:20px }
+    .mid{ text-align:center; margin-bottom:10px }
+    .fth{ max-width:var(--max-width); margin: 6px auto; display:flex; gap:16px; flex-wrap:wrap; justify-content:center }
+    .fth > div{ background: #fff; padding:14px 18px; border-radius:10px; box-shadow:0 8px 20px rgba(15,15,30,0.03); display:flex; align-items:center; gap:10px; min-width:160px }
+    .fth i{ color:#6b7280 }
+
+    .fth-cont{ max-width:var(--max-width); margin:18px auto; display:flex; gap:12px; flex-wrap:wrap; justify-content:center }
+    .fth-cont > div{ background:#fff; padding:12px 16px; border-radius:10px; box-shadow:0 8px 20px rgba(15,15,30,0.03); min-width:140px; display:flex; align-items:center; gap:10px }
+
+    /* =========================
+       Testimonials / sth-cont
+       ========================= */
+    .sth-cont{ max-width:var(--max-width); margin:30px auto; padding:20px; display:flex; gap:22px; align-items:flex-start; flex-wrap:wrap }
+    .sth{ flex:1 1 300px; }
+    .sth1{ font-family:'Montserrat',sans-serif; font-size:22px }
+    .sth2{ color:var(--muted); margin-top:8px }
+    .sth3{ flex:0 0 200px }
+    .reduce{ border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.06) }
+    .svth{ flex:1 1 380px; background:#fff; padding:16px; border-radius:12px; box-shadow: 0 8px 24px rgba(10,10,30,0.04) }
+    .svth1{ font-weight:700 }
+    .svth2{ color:var(--muted); margin-top:6px }
+    .svth3{ margin-top:8px; color:#f59e0b; font-weight:700 }
+
+    /* =========================
+       Footer (dark)
+       ========================= */
+    footer{
+      background:#0b1220; color:#f3f4f6; padding:22px; text-align:center; margin-top:28px;
+    }
+    footer p{ opacity:.9; font-size:14px }
+
+    /* =========================
+       Responsive: fix wacky area 351-700
+       ========================= */
+    /* mobile: single column */
+    @media (max-width: 600px){
+      .contained{ flex-direction:column; padding:18px; gap:18px }
+      .move, .img{ width:100% }
+      .spn3{ font-size:28px }
+      .in-it{ grid-template-columns: repeat(2,1fr); padding:12px }
+      .within{ grid-template-columns: repeat(1,1fr) }
+      .thd-cont{ flex-direction:column; padding:12px }
+      .fth, .fth-cont{ flex-direction:column; align-items:center }
+      .sth-cont{ flex-direction:column; align-items:center }
+    }
+
+    /* small tablets: 351 - 900: two column / stacked as needed (fixes "wacky" about behavior) */
+    @media (min-width: 601px) and (max-width: 900px){
+      .contained{ flex-direction:row; gap:18px; align-items:center; padding:18px }
+      .move{ flex: 1 1 48%; min-width:250px }
+      .img{ flex: 1 1 48%; min-width:250px }
+      .spn3{ font-size:34px }
+      .in-it{ grid-template-columns: repeat(2,1fr) }
+      .within{ grid-template-columns: repeat(2,1fr) }
+      .thd-cont{ flex-direction:row; gap:14px; flex-wrap:wrap }
+      .thd1, .thd-cont1{ min-width:45% }
+      /* ensure the about/intro area remains readable */
+      .intro img{ width:100%; height:auto }
+      .content button{ font-size:15px; padding:10px 16px }
+    }
+
+    /* larger screens: 901+ (desktop) */
+    @media (min-width: 901px){
+      .contained{ padding:30px }
+      .in-it{ grid-template-columns: repeat(4,1fr) }
+      .within{ grid-template-columns: repeat(4,1fr) }
+    }
+
+    /* utility spacing */
+    .mt-24{ margin-top:24px }
+    .mb-24{ margin-bottom:24px }
+
+    /* small polish */
+    button:focus{ outline:none; box-shadow:0 0 0 4px rgba(99,102,241,0.12) }
+  </style>
+</head>
+
+<body>
+  <!-- NAV -->
+  <header class="nav-bar" role="banner">
+    <div class="ttxt">
+      <span class="spn1"><i class="fa fa-address-book bold-icon" aria-hidden="true"></i></span>
+      <span class="pnn2">Tutor</span>
+    </div>
+
+    <nav class="nav-item" role="navigation" aria-label="Main Navigation">
+      <!-- I changed hrefs to meaningful anchors so smooth-scroll works -->
+      <a class="active" href="#top">Home</a>
+      <a href="#about">For student</a>
+      <a href="#resources">Resources</a>
+      <a href="#about">About us</a>
+      <a href="#contact">Contact us</a>
+
+      <div class="next" aria-hidden="false">
+        <a class="red" href="#signin">Sign in</a>
+        <div class="orange">
+          <a class="blue" href="#register">Register</a>
+        </div>
       </div>
-      <div class="nxt-stg"><div class="icon2"><i class="fa fa-clock-o"></i></div><span class="who">24/7 Tutor Availability</span><p class="wow">Our tutors are always available to respond as quickly as possible for you.</p></div>
-      <div class="nxt-stg"><div class="icon3"><i class="fa fa-th-large"></i></div><span class="who">Interactive Whiteboard</span><p class="wow">Our digital whiteboard equipped with video chat features.</p></div>
-      <div class="nxt-stg"><div class="icon4"><i class="fa fa-dollar"></i></div><span class="who">Affordable Prices</span><p class="wow">Choose an expert tutor based on your budget and per hour.</p></div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- announcement -->
+    <div class="other">
+      <p>Are you a university or a school student for an online tutoring partnership? <span class="active">Talk to us</span></p>
+    </div>
+
+    <!-- hero -->
+    <section class="contained" aria-label="hero">
+      <div class="move">
+        <span class="spn2">100% Satisfaction Guarantee</span>
+        <h1 class="spn3">Find Your <br> Perfect Tutor</h1>
+
+        <div class="great">
+          <span class="spn4">We help you find perfect tutor for 1-on-1 lessons. It is completely free and private.</span>
+        </div>
+
+        <div class="content">
+          <button type="button">Get started</button>
+
+          <div class="round" aria-hidden="true">
+            <i class="fa fa-play" aria-hidden="true"></i>
+          </div>
+
+          <span class="spn5">see how it works</span>
+        </div>
+      </div>
+
+      <div class="img" aria-hidden="true">
+        <!-- keep your original path; fallback placeholder if missing -->
+        <img src="img/original1.png" alt="Tutor hero illustration" onerror="this.onerror=null;this.src='https://via.placeholder.com/520x360?text=Tutor+Hero'">
+      </div>
     </section>
 
-    <!-- Third content pair -->
-    <section class="thd-cont">
-      <div class="thd1">
-        <img src="img/original2.png" alt="scheduling" onerror="this.src='https://via.placeholder.com/420x320?text=Schedule'">
+    <!-- stats -->
+    <section class="stage2" aria-label="stats">
+      <div class="in-it">
+        <div class="sub1">
+          <span class="yes1">870</span><br><span class="yes2">Expert tutors</span>
+        </div>
+
+        <div class="right">
+          <span class="yes1">20,000+</span><br><span class="yes2">Hours tutored</span>
+        </div>
+
+        <div class="right">
+          <span class="yes1">298</span><br><span class="yes2">Subjects and courses</span>
+        </div>
+
+        <div class="right">
+          <span class="yes1">72,920</span><br><span class="yes2">Active students</span>
+        </div>
       </div>
+    </section>
+
+    <!-- Why choose us -->
+    <section class="page" id="about" aria-label="why choose us">
+      <p class="page2">Why Choose Us</p>
+      <div class="page4"><span class="page3">Benefits of online tutoring services with us</span></div>
+    </section>
+
+    <!-- features -->
+    <section class="within" aria-label="features">
+      <div class="nxt-stg">
+        <div class="icon1"><i class="fa fa-user its" aria-hidden="true"></i></div>
+        <span class="who">One-on-one teaching</span>
+        <p class="wow">All our special education experts have a degree in special education.</p>
+      </div>
+
+      <div class="nxt-stg">
+        <div class="icon2"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+        <span class="who">24/7 Tutor Availability</span>
+        <p class="wow">Our tutors are always available to respond as quickly as possible for you.</p>
+      </div>
+
+      <div class="nxt-stg">
+        <div class="icon3"><i class="fa fa-th-large" aria-hidden="true"></i></div>
+        <span class="who">Interactive Whiteboard</span>
+        <p class="wow">Our digital whiteboard equipped with video chat features.</p>
+      </div>
+
+      <div class="nxt-stg">
+        <div class="icon4"><i class="fa fa-dollar" aria-hidden="true"></i></div>
+        <span class="who">Affordable Prices</span>
+        <p class="wow">Choose an expert tutor based on your budget and per hour.</p>
+      </div>
+    </section>
+
+    <!-- third content pair -->
+    <section class="thd-cont" aria-label="scheduling">
+      <div class="thd1">
+        <img class="thd2" src="img/original2.png" alt="scheduling" onerror="this.onerror=null;this.src='https://via.placeholder.com/420x320?text=Schedule'">
+      </div>
+
       <div class="thd-cont1">
         <span class="thd3">Customize with your schedule</span>
         <div class="thd4-1"><span class="thd4">Personalized Professional Online Tutor on Your Schedule</span></div>
-        <div class="thd5-1"><span class="thd5">Our scheduling system allows you to select based on your free time. Keep track of your students' class and tutoring schedules, and never miss your lectures.</span></div>
-        <div class="bttn"><button>Get started</button></div>
+        <div class="thd5-1"><span class="thd5">Our scheduling system allows you to select based on your free time. Keep track of your students' class and tutoring schedules, and never miss your lectures. The best online class scheduling system with easy accessibility.</span></div>
+
+        <div class="bttn"><button type="button">Get started</button></div>
       </div>
     </section>
 
-    <section class="thd-cont">
+    <!-- third content pair (reversed) -->
+    <section class="thd-cont" aria-label="tutors">
       <div class="thd-cont1">
-        <span class="thd3">Talented Tutors</span>
+        <span class="thd3">Customize with your schedule</span>
         <div class="thd4-1"><span class="thd4">Talented and Qualified Tutors to Serve You for Help</span></div>
-        <div class="thd5-1"><span class="thd5">Choose your tutor and schedule sessions easily with our platform.</span></div>
-        <div class="btt"><button>Get started</button></div>
+        <div class="thd5-1"><span class="thd5">Our scheduling system allows you to select based on your free time. Keep track of your students' class and tutoring schedules, and never miss your lectures.</span></div>
+        <div class="btt"><button type="button">Get started</button></div>
       </div>
+
       <div class="thd1">
-        <img src="img/original3.png" alt="tutors" onerror="this.src='https://via.placeholder.com/420x320?text=Tutors'">
+        <img class="thd2" src="img/original3.png" alt="tutors" onerror="this.onerror=null;this.src='https://via.placeholder.com/420x320?text=Tutors'">
       </div>
     </section>
 
-    <!-- Subjects -->
-    <section class="frth-cont" id="resources">
+    <!-- subjects -->
+    <section class="frth-cont" id="resources" aria-label="subjects">
       <div class="mid">
         <p class="fth1">Our Tutor Subjects</p>
         <span class="fth1-next">Find Online Tutor in Any Subject</span>
       </div>
+
       <div class="join">
         <div class="fth">
           <div class="fth2"><i class="fa fa-laptop"></i><span>Engineering</span></div>
@@ -42,6 +443,7 @@
           <div class="fth4"><i class="fa fa-language"></i><span>Languages</span></div>
           <div class="fth5"><i class="fa fa-flask"></i><span>Science</span></div>
         </div>
+
         <div class="fth-cont">
           <div class="fth6"><i class="fa fa-book"></i><span>History</span></div>
           <div class="fth7"><i class="fa fa-heart"></i><span>Psychology</span></div>
@@ -51,57 +453,44 @@
       </div>
     </section>
 
-    <!-- Testimonials -->
-    <section class="sth-cont">
+    <!-- testimonials -->
+    <section class="sth-cont" aria-label="testimonials">
       <div class="sth">
         <span class="sth1">Our Testimonials</span><br><br>
         <span class="sth2">What Our Students Say About Us</span><br>
       </div>
+
       <div class="sth3">
-        <img class="reduce" src="img/original4.png" alt="testimonials" onerror="this.src='https://via.placeholder.com/260x260?text=Testimonial'">
+        <img class="reduce" src="img/original4.png" alt="testimonials" onerror="this.onerror=null;this.src='https://via.placeholder.com/260x260?text=Testimonial'">
       </div>
+
       <div class="svth">
         <span class="svth1">Albert Monica</span><br>
         <span class="svth2">Student at college</span><br>
         <span class="svth3">5 Star</span><br>
         <div class="svth4">
-          <span>As a student of this online education website, I can confidently say that it has been an incredible experience. The platform is user-friendly and the courses are well structured, making it easy for me to learn at my own pace.</span>
+          <span>As a student of this online education website, i can confidently say that it has been an incredible experience. The platform is user-friendly and the courses are well structured, making it easy for me to learn at my own pace.</span>
         </div>
       </div>
     </section>
 
-    <!-- Projects carousel -->
-    <section class="frth-cont">
-      <div class="mid">
-        <p class="fth1">Our Projects</p>
-        <span class="fth1-next">Explore Recent Student Works</span>
-      </div>
-      <div style="position: relative; overflow: hidden; max-width: 100%;">
-        <div class="proj-slider" id="projSlider">
-          <div class="proj-card"><img src="https://via.placeholder.com/250x150?text=Project+1"><p>Project 1 Description</p></div>
-          <div class="proj-card"><img src="https://via.placeholder.com/250x150?text=Project+2"><p>Project 2 Description</p></div>
-          <div class="proj-card"><img src="https://via.placeholder.com/250x150?text=Project+3"><p>Project 3 Description</p></div>
-          <div class="proj-card"><img src="https://via.placeholder.com/250x150?text=Project+4"><p>Project 4 Description</p></div>
-        </div>
-        <button id="prevProj" style="position:absolute; left:10px; top:40%; background:#fff; border:none; padding:8px; border-radius:50%; cursor:pointer;"><i class="fa fa-chevron-left"></i></button>
-        <button id="nextProj" style="position:absolute; right:10px; top:40%; background:#fff; border:none; padding:8px; border-radius:50%; cursor:pointer;"><i class="fa fa-chevron-right"></i></button>
-      </div>
-    </section>
-
-    <!-- Contact anchor -->
+    <!-- contact anchor for nav -->
     <section id="contact" style="height:20px"></section>
   </main>
 
-  <!-- Footer -->
-  <footer>
+  <!-- footer -->
+  <footer role="contentinfo">
     <p>&copy; <span id="year"></span> All rights reserved.</p>
   </footer>
 
-  <!-- Scripts -->
+  <!-- =========================
+       Scripts: smooth scroll + year
+       ========================= -->
   <script>
+    // set footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Smooth scroll
+    // Smooth scroll for nav links that reference anchors
     document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
       anchor.addEventListener('click', function(e){
         const target = this.getAttribute('href');
@@ -109,31 +498,16 @@
         const el = document.querySelector(target);
         if (!el) return;
         e.preventDefault();
-        const offset = 78;
+        const offset = 78; // nav height (matches CSS main padding-top)
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: 'smooth' });
       });
     });
 
-    // Projects carousel
-    const slider = document.getElementById('projSlider');
-    const prev = document.getElementById('prevProj');
-    const next = document.getElementById('nextProj');
-    let index2 = 0;
-
-    function slideProj(dir=1){
-      const cardWidth = slider.children[0].offsetWidth + 18; // card + gap
-      index2 += dir;
-      if(index2 < 0) index2 = slider.children.length-1;
-      if(index2 >= slider.children.length) index2 = 0;
-      slider.style.transform = `translateX(${-index2*cardWidth}px)`;
-    }
-
-    prev.addEventListener('click', ()=>slideProj(-1));
-    next.addEventListener('click', ()=>slideProj(1));
-
-    // auto-slide every 3 seconds
-    setInterval(()=>slideProj(1), 3000);
+    // Optional: small accessible focus outline on keyboard navigation
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Tab') document.body.classList.add('show-focus-outline');
+    });
   </script>
 </body>
 </html>
