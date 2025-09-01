@@ -8,7 +8,7 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- Font Awesome (kept same version you used) -->
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <style>
@@ -68,8 +68,12 @@
       letter-spacing:.4px;
     }
 
-    /* nav items */
-    .nav-item { display:flex; align-items:center; gap:14px; }
+    /* nav items (desktop only) */
+    .nav-item {
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
     .nav-item a {
       color:rgba(255,255,255,0.95);
       padding:8px 10px;
@@ -85,6 +89,17 @@
     .next{ display:flex; gap:10px; align-items:center; margin-left:12px; }
     .next .red{ padding:8px 12px; border-radius:8px; background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.2) }
     .next .orange .blue{ padding:8px 12px; border-radius:8px; background:#fff; color:var(--text); font-weight:700 }
+
+    /* Hamburger menu (visible on mobile/tablet) */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #fff;
+      cursor: pointer;
+      z-index: 1300;
+    }
 
     /* create top offset so content not hidden behind fixed nav */
     main{ padding-top:78px } /* adjust if nav height changes */
@@ -243,6 +258,78 @@
     footer p{ opacity:.9; font-size:14px }
 
     /* =========================
+       SIDEBAR (mobile & tablet)
+       ========================= */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 280px;
+      height: 100%;
+      background: #fff;
+      box-shadow: 4px 0 12px rgba(0,0,0,0.1);
+      z-index: 1100;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+      padding-top: 78px; /* matches nav height */
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .sidebar-nav a {
+      color: var(--text);
+      padding: 14px 10px;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .sidebar-nav a:hover,
+    .sidebar-nav a.active {
+      background: #f0f4ff;
+    }
+
+    .sidebar-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      color: var(--text);
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    /* Overlay to close sidebar when clicking outside */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* =========================
        Responsive: fix wacky area 351-700
        ========================= */
     /* mobile: single column */
@@ -255,9 +342,18 @@
       .thd-cont{ flex-direction:column; padding:12px }
       .fth, .fth-cont{ flex-direction:column; align-items:center }
       .sth-cont{ flex-direction:column; align-items:center }
+
+      /* Show hamburger, hide desktop nav */
+      .menu-toggle { display: block; }
+      .nav-item { display: none; }
+
+      /* Sidebar & overlay */
+      .sidebar, .overlay {
+        display: block;
+      }
     }
 
-    /* small tablets: 351 - 900: two column / stacked as needed (fixes "wacky" about behavior) */
+    /* small tablets: 601px - 900px */
     @media (min-width: 601px) and (max-width: 900px){
       .contained{ flex-direction:row; gap:18px; align-items:center; padding:18px }
       .move{ flex: 1 1 48%; min-width:250px }
@@ -267,9 +363,12 @@
       .within{ grid-template-columns: repeat(2,1fr) }
       .thd-cont{ flex-direction:row; gap:14px; flex-wrap:wrap }
       .thd1, .thd-cont1{ min-width:45% }
-      /* ensure the about/intro area remains readable */
       .intro img{ width:100%; height:auto }
       .content button{ font-size:15px; padding:10px 16px }
+
+      /* Show hamburger menu, hide desktop nav on tablet */
+      .menu-toggle { display: block; }
+      .nav-item { display: none; }
     }
 
     /* larger screens: 901+ (desktop) */
@@ -277,6 +376,8 @@
       .contained{ padding:30px }
       .in-it{ grid-template-columns: repeat(4,1fr) }
       .within{ grid-template-columns: repeat(4,1fr) }
+      .menu-toggle { display: none; }
+      .nav-item { display: flex; }
     }
 
     /* utility spacing */
@@ -296,8 +397,12 @@
       <span class="pnn2">Tutor</span>
     </div>
 
+    <!-- Hamburger Menu Button -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <i class="fa fa-bars"></i>
+    </button>
+
     <nav class="nav-item" role="navigation" aria-label="Main Navigation">
-      <!-- I changed hrefs to meaningful anchors so smooth-scroll works -->
       <a class="active" href="#top">Home</a>
       <a href="#about">For student</a>
       <a href="#resources">Resources</a>
@@ -312,6 +417,23 @@
       </div>
     </nav>
   </header>
+
+  <!-- Mobile & Tablet Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <button class="sidebar-close" id="sidebarClose">&times;</button>
+    <nav class="sidebar-nav">
+      <a href="#top" class="active">Home</a>
+      <a href="#about">For student</a>
+      <a href="#resources">Resources</a>
+      <a href="#about">About us</a>
+      <a href="#contact">Contact us</a>
+      <a href="#signin" class="red-link">Sign in</a>
+      <a href="#register" class="blue-link">Register</a>
+    </nav>
+  </div>
+
+  <!-- Overlay to close sidebar -->
+  <div class="overlay" id="overlay"></div>
 
   <main id="top">
     <!-- announcement -->
@@ -484,29 +606,64 @@
   </footer>
 
   <!-- =========================
-       Scripts: smooth scroll + year
+       Scripts: smooth scroll + year + sidebar toggle
        ========================= -->
   <script>
-    // set footer year
+    // Set footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Smooth scroll for nav links that reference anchors
-    document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
-      anchor.addEventListener('click', function(e){
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
         const target = this.getAttribute('href');
         if (!target || target === '#') return;
         const el = document.querySelector(target);
         if (!el) return;
         e.preventDefault();
-        const offset = 78; // nav height (matches CSS main padding-top)
+        const offset = 78;
         const top = el.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: 'smooth' });
+
+        // Close sidebar after clicking link (mobile)
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('overlay').classList.remove('active');
       });
     });
 
-    // Optional: small accessible focus outline on keyboard navigation
-    document.addEventListener('keydown', function(e){
-      if(e.key === 'Tab') document.body.classList.add('show-focus-outline');
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebarClose = document.getElementById('sidebarClose');
+
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.add('open');
+      overlay.classList.add('active');
+    });
+
+    sidebarClose.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+
+    // Optional: keyboard close (Escape)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+      }
+    });
+
+    // Add focus outline for accessibility
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') {
+        document.body.classList.add('show-focus-outline');
+      }
     });
   </script>
 </body>
