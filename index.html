@@ -1,4 +1,6 @@
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,48 +45,204 @@
        NAVBAR (fixed)
        ========================= */
     .nav-bar{
-      position:fixed;
-      top:0; left:0; right:0;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-      padding:12px 20px;
-      background: var(--accent-1);
-      color:#fff;
-      z-index: 1200;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        position:fixed;
+        top:0; left:0; right:0;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:20px;
+        padding:12px 20px;
+        background: var(--accent-1);
+        color:#fff;
+        z-index: 1200;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        backdrop-filter: blur(10px);
+        animation: slideDown 0.5s ease-out;
     }
 
-    /* logo area */
-    .nav-bar .ttxt{ display:flex; align-items:center; gap:12px; }
-    .ttxt .spn1 .bold-icon{
-      width:46px;height:46px;display:flex;align-items:center;justify-content:center;
-      background: rgba(255,255,255,0.12); border-radius:10px; font-size:22px; color:#fff;
-    }
-    .ttxt .pnn2{
-      font-family:'Montserrat', sans-serif;
-      font-weight:700;
-      font-size:20px;
-      letter-spacing:.4px;
-    }
+/* Slide down animation on page load */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
-    /* nav items (desktop only) */
-    .nav-item {
-      display:flex;
-      align-items:center;
-      gap:14px;
-    }
-    .nav-item a {
-      color:rgba(255,255,255,0.95);
-      padding:8px 10px;
-      border-radius:8px;
-      font-weight:500;
-      transition: background .18s ease, transform .12s ease;
-      font-size:15px;
-    }
-    .nav-item a:hover{ background: rgba(255,255,255,0.08); transform:translateY(-2px) }
-    .nav-item a.active{ background: rgba(255,255,255,0.12); box-shadow: 0 4px 14px rgba(0,0,0,0.12) }
+/* Navbar scroll effect - add this class with JavaScript when scrolled */
+.nav-bar.scrolled {
+  padding: 8px 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  transition: padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* logo area */
+.nav-bar .ttxt{ 
+  display:flex; 
+  align-items:center; 
+  gap:12px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.nav-bar .ttxt:hover {
+  transform: scale(1.05);
+}
+
+.ttxt .bold-icon{
+  width:46px;
+  height:46px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(255,255,255,0.12); 
+  border-radius:10px; 
+  font-size:22px; 
+  color:#fff;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.ttxt .bold-icon:hover::before {
+  transform: translateX(100%) translateY(100%) rotate(45deg);
+}
+
+.ttxt .bold-icon:hover {
+  background: rgba(255,255,255,0.2);
+  transform: rotate(360deg);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.ttxt .pnn2{
+  font-family:'Montserrat', sans-serif;
+  font-weight:700;
+  font-size:20px;
+  letter-spacing:.4px;
+  position: relative;
+  display: inline-block;
+}
+
+/* Subtle glow effect on logo text */
+.ttxt:hover .pnn2 {
+  text-shadow: 0 0 20px rgba(255,255,255,0.5);
+}
+
+/* nav items (desktop only) */
+.nav-item {
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.nav-item a {
+  color:rgba(255,255,255,0.95);
+  padding:8px 10px;
+  border-radius:8px;
+  font-weight:500;
+  transition: all 0.3s ease;
+  font-size:15px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Underline effect */
+.nav-item a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #fff;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.nav-item a:hover::after {
+  width: 80%;
+  left: 10%;
+}
+
+.nav-item a:hover{ 
+  background: rgba(255,255,255,0.15); 
+  transform:translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.nav-item a.active{ 
+  background: rgba(255,255,255,0.2); 
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  transform: scale(1.05);
+}
+
+/* Ripple effect on click */
+.nav-item a::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.nav-item a:active::before {
+  width: 200px;
+  height: 200px;
+}
+
+/* Pulse animation for active link */
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(255,255,255,0.3);
+  }
+}
+
+.nav-item a.active {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Smooth fade-in for nav items */
+.nav-item a {
+  animation: fadeIn 0.5s ease-out backwards;
+}
+
+.nav-item a:nth-child(1) { animation-delay: 0.3s; }
+.nav-item a:nth-child(2) { animation-delay: 0.6s; }
+.nav-item a:nth-child(3) { animation-delay: 0.9s; }
+.nav-item a:nth-child(4) { animation-delay: 1.2s; }
+.nav-item a:nth-child(5) { animation-delay: 1.5s; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav-bar {
+    padding: 10px 15px;
+  }
+  
+  .ttxt .pnn2 {
+    font-size: 18px;
+  }
+}
 
     /* right-side actions */
     .next{ display:flex; gap:10px; align-items:center; margin-left:12px; }
@@ -111,6 +269,8 @@
     .other{
       background: linear-gradient(90deg, rgba(255,182,66,0.12), rgba(122,0,255,0.06));
       padding:10px 20px;
+      margin-top: -7px;
+      margin-bottom: -20px;
       text-align:center;
       color: #333;
       font-weight:500;
@@ -160,7 +320,11 @@
     /* =========================
        STATS - stage2
        ========================= */
-    .stage2{ margin-top:28px; }
+    .stage2{ 
+        margin-top:100px; 
+        background-color: rgb(255, 243, 242);
+        padding: 20px;
+    }
     .in-it{
       max-width:var(--max-width);
       margin: 0 auto;
@@ -210,46 +374,548 @@
     /* =========================
        Third container blocks (thd-cont)
        ========================= */
-    .thd-cont{
-      max-width: var(--max-width);
-      margin: 20px auto;
-      display:flex; gap:22px; align-items:center; padding:18px;
-      flex-wrap:wrap;
+    /* Base styles with hidden state */
+    .thd-cont {
+    max-width: var(--max-width);
+    margin: 20px auto;
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    padding: 18px;
+    overflow: hidden;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
     }
-    .thd1{ flex:1; min-width:260px }
-    .thd-cont1{ flex:1; min-width:280px }
-    .thd3{ font-family:'Montserrat',sans-serif; font-size:20px; color:#111 }
-    .thd4{ font-weight:700; font-size:22px; display:block; margin-top:6px }
-    .thd5{ color:var(--muted); font-size:15px; display:block; line-height:1.5 }
 
-    .bttn button, .btt button{ margin-top:14px; background: linear-gradient(90deg,#6ee7b7,#3b82f6); padding:12px 18px; border:none; border-radius:10px; color:#fff; font-weight:700; cursor:pointer }
+    /* Visible state when scrolled into view */
+    .thd-cont.animate {
+    opacity: 1;
+    transform: translateY(0);
+    }
 
-    /* =========================
-       Subjects / fth / join grids
-       ========================= */
-    .frth-cont{ background: linear-gradient(90deg,#fff7ed,#fff1f2); padding:34px 20px; margin-top:20px }
-    .mid{ text-align:center; margin-bottom:10px }
-    .fth{ max-width:var(--max-width); margin: 6px auto; display:flex; gap:16px; flex-wrap:wrap; justify-content:center }
-    .fth > div{ background: #fff; padding:14px 18px; border-radius:10px; box-shadow:0 8px 20px rgba(15,15,30,0.03); display:flex; align-items:center; gap:10px; min-width:160px }
-    .fth i{ color:#6b7280 }
+    .thd1 {
+    flex: 1;
+    min-width: 260px;
+    
+    opacity: 0;
+    transform: translateX(-80px);
+    transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+    }
+    .thd2{
+        width: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+    }
+    .thd-cont.animate .thd1 {
+    opacity: 1;
+    transform: translateX(0);
+    }
 
-    .fth-cont{ max-width:var(--max-width); margin:18px auto; display:flex; gap:12px; flex-wrap:wrap; justify-content:center }
-    .fth-cont > div{ background:#fff; padding:12px 16px; border-radius:10px; box-shadow:0 8px 20px rgba(15,15,30,0.03); min-width:140px; display:flex; align-items:center; gap:10px }
+    .thd-cont1 {
+    flex: 1;
+    min-width: 280px;
+    opacity: 0;
+    transform: translateX(80px);
+    transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
+    }
 
-    /* =========================
-       Testimonials / sth-cont
-       ========================= */
-    .sth-cont{ max-width:var(--max-width); margin:30px auto; padding:20px; display:flex; gap:22px; align-items:flex-start; flex-wrap:wrap }
-    .sth{ flex:1 1 300px; }
-    .sth1{ font-family:'Montserrat',sans-serif; font-size:22px }
-    .sth2{ color:var(--muted); margin-top:8px }
-    .sth3{ flex:0 0 200px }
-    .reduce{ border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.06) }
-    .svth{ flex:1 1 380px; background:#fff; padding:16px; border-radius:12px; box-shadow: 0 8px 24px rgba(10,10,30,0.04) }
-    .svth1{ font-weight:700 }
-    .svth2{ color:var(--muted); margin-top:6px }
-    .svth3{ margin-top:8px; color:#f59e0b; font-weight:700 }
+    .thd-cont.animate .thd-cont1 {
+    opacity: 1;
+    transform: translateX(0);
+    }
 
+    .thd3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    color: #111;
+    }
+
+    .thd4 {
+    font-weight: 700;
+    font-size: 22px;
+    display: block;
+    margin-top: 6px;
+    }
+
+    .thd5 {
+    color: var(--muted);
+    font-size: 15px;
+    display: block;
+    line-height: 1.5;
+    }
+
+    .bttn button,
+    .btt button {
+    margin-top: 14px;
+    background: linear-gradient(90deg, #6ee7b7, #3b82f6);
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transform: scale(0.9);
+    opacity: 0;
+    transition: all 0.5s ease 0.6s;
+    }
+
+    .thd-cont.animate .bttn button,
+    .thd-cont.animate .btt button {
+    transform: scale(1);
+    opacity: 1;
+    }
+
+    .bttn button:hover,
+    .btt button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    /* Subjects / fth / join grids */
+    .frth-cont {
+    background: linear-gradient(90deg, #fff7ed, #fff1f2);
+    padding: 34px 20px;
+    margin-top: 20px;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .frth-cont.animate {
+    opacity: 1;
+    transform: translateY(0);
+    }
+
+    .mid {
+    text-align: center;
+    margin-bottom: 10px;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
+    }
+
+    .frth-cont.animate .mid {
+    opacity: 1;
+    transform: scale(1);
+    }
+
+    .fth {
+    max-width: var(--max-width);
+    margin: 6px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    }
+
+    .fth > div {
+    background: #fff;
+    padding: 14px 18px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(15, 15, 30, 0.03);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 160px;
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+    transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease;
+    }
+
+    /* Staggered animation for grid items */
+    .frth-cont.animate .fth > div:nth-child(1) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 0.3s;
+    }
+
+    .frth-cont.animate .fth > div:nth-child(2) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 0.4s;
+    }
+
+    .frth-cont.animate .fth > div:nth-child(3) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 0.5s;
+    }
+
+    .frth-cont.animate .fth > div:nth-child(4) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 0.6s;
+    }
+
+    .frth-cont.animate .fth > div:nth-child(5) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 0.7s;
+    }
+
+    .frth-cont.animate .fth > div:nth-child(6) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 0.8s;
+    }
+
+    .frth-cont.animate .fth > div:nth-child(n+7) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 0.9s;
+    }
+
+    .fth > div:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 28px rgba(15, 15, 30, 0.12);
+    }
+
+    .fth i {
+    color: #6b7280;
+    transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .fth > div:hover i {
+    transform: rotate(360deg);
+    color: #3b82f6;
+    }
+
+    .fth-cont {
+    max-width: var(--max-width);
+    margin: 18px auto;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fth-cont.animate {
+    opacity: 1;
+    transform: translateY(0);
+    }
+
+    .fth-cont > div {
+    background: #fff;
+    padding: 12px 16px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(15, 15, 30, 0.03);
+    min-width: 140px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transform: scale(0.8) rotateY(90deg);
+    transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+    }
+
+    /* Staggered flip animation */
+    .fth-cont.animate > div:nth-child(1) {
+    opacity: 1;
+    transform: scale(1) rotateY(0);
+    transition-delay: 0.2s;
+    }
+
+    .fth-cont.animate > div:nth-child(2) {
+    opacity: 1;
+    transform: scale(1) rotateY(0);
+    transition-delay: 0.3s;
+    }
+
+    .fth-cont.animate > div:nth-child(3) {
+    opacity: 1;
+    transform: scale(1) rotateY(0);
+    transition-delay: 0.4s;
+    }
+
+    .fth-cont.animate > div:nth-child(4) {
+    opacity: 1;
+    transform: scale(1) rotateY(0);
+    transition-delay: 0.5s;
+    }
+
+    .fth-cont.animate > div:nth-child(5) {
+    opacity: 1;
+    transform: scale(1) rotateY(0);
+    transition-delay: 0.6s;
+    }
+
+    .fth-cont.animate > div:nth-child(n+6) {
+    opacity: 1;
+    transform: scale(1) rotateY(0);
+    transition-delay: 0.7s;
+    }
+
+    .fth-cont > div:hover {
+    transform: scale(1.08) translateY(-3px);
+    box-shadow: 0 12px 28px rgba(15, 15, 30, 0.12);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+    .thd-cont {
+        padding: 12px;
+    }
+    
+    .thd1,
+    .thd-cont1 {
+        min-width: 100%;
+    }
+    }
+
+    /* Testimonials Section */
+    .sth-cont {
+    background: var(--bg);
+    padding: 80px 20px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .sth-cont.animate {
+    opacity: 1;
+    transform: translateY(0);
+    }
+
+    /* Header Container */
+    .sth {
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
+    }
+
+    .sth-cont.animate .sth {
+    opacity: 1;
+    transform: scale(1);
+    }
+
+    .sth1 {
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: var(--accent-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    }
+
+    .sth2 {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+    }
+
+    /* Testimonials Grid Container - wraps all testimonial boxes */
+    .testimonials-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    }
+
+    /* Individual Testimonial Box */
+    .testimonial-box {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.6s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+    }
+
+    /* Staggered animation for testimonial boxes */
+    .sth-cont.animate .testimonial-box:nth-child(1) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 0.4s;
+    }
+
+    .sth-cont.animate .testimonial-box:nth-child(2) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 0.6s;
+    }
+
+    .sth-cont.animate .testimonial-box:nth-child(3) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 0.8s;
+    }
+
+    .testimonial-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 40px var(--card-glow);
+    }
+
+    /* Image at top of box */
+    .sth3 {
+    width: 100%;
+    display: flex;
+    margin-top: -80px;
+    justify-content: center;
+    margin-bottom: 25px;
+    opacity: 0;
+    transform: scale(0.5) rotate(-180deg);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .sth-cont.animate .testimonial-box:nth-child(1) .sth3 {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    transition-delay: 0.6s;
+    }
+
+    .sth-cont.animate .testimonial-box:nth-child(2) .sth3 {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    transition-delay: 0.8s;
+    }
+
+    .sth-cont.animate .testimonial-box:nth-child(3) .sth3 {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    transition-delay: 1s;
+    }
+
+    .reduce {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                var(--accent-1) border-box;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .testimonial-box:hover .reduce {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 24px var(--card-glow);
+    }
+
+    /* Testimonial Content below image */
+    .svth {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .sth-cont.animate .testimonial-box:nth-child(1) .svth {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.8s;
+    }
+
+    .sth-cont.animate .testimonial-box:nth-child(2) .svth {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 1s;
+    }
+
+    .sth-cont.animate .testimonial-box:nth-child(3) .svth {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 1.2s;
+    }
+
+    .svth1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    }
+
+    .svth2 {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 500;
+    margin: 0;
+    }
+
+    .svth3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fbbf24;
+    margin: 8px 0;
+    display: inline-block;
+    animation: none;
+    }
+
+    .sth-cont.animate .svth3 {
+    animation: starPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes starPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    }
+
+    .svth3::before {
+    content: "⭐⭐⭐⭐⭐ ";
+    }
+
+    .svth4 {
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    }
+
+    .svth4 span {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--muted);
+    display: block;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+    .testimonials-wrapper {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    }
+
+    @media (max-width: 640px) {
+    .sth-cont {
+        padding: 60px 20px;
+    }
+    
+    .sth2 {
+        font-size: 28px;
+    }
+    
+    .testimonials-wrapper {
+        grid-template-columns: 1fr;
+    }
+    
+    .testimonial-box {
+        padding: 25px;
+    }
+    
+    .svth1 {
+        font-size: 20px;
+    }
+    }
     /* =========================
        Footer (dark)
        ========================= */
@@ -411,7 +1077,7 @@
   <!-- NAV -->
   <header class="nav-bar" role="banner">
     <div class="ttxt">
-      <span class="spn1"><i class="fa fa-address-book bold-icon" aria-hidden="true"></i></span>
+      <i class="fa fa-book bold-icon" aria-hidden="true"></i>
       <span class="pnn2">Tutor</span>
     </div>
 
@@ -508,42 +1174,43 @@
     </section>
 
     <!-- Why choose us -->
-    <section class="page" id="about" aria-label="why choose us">
-      <p class="page2">Why Choose Us</p>
-      <div class="page4"><span class="page3">Benefits of online tutoring services with us</span></div>
-    </section>
+    <div style="margin-top: 80px; margin-bottom: 80px;">
+        <section class="page" id="about" aria-label="why choose us">
+        <p class="page2">Why Choose Us</p>
+        <div class="page4"><span class="page3">Benefits of online tutoring services with us</span></div>
+        </section>
 
-    <!-- features -->
-    <section class="within" aria-label="features">
-      <div class="nxt-stg">
-        <div class="icon1"><i class="fa fa-user its" aria-hidden="true"></i></div>
-        <span class="who">One-on-one teaching</span>
-        <p class="wow">All our special education experts have a degree in special education.</p>
-      </div>
+        <!-- features -->
+        <section class="within" aria-label="features">
+        <div class="nxt-stg">
+            <div class="icon1"><i class="fa fa-user its" aria-hidden="true"></i></div>
+            <span class="who">One-on-one teaching</span>
+            <p class="wow">All our special education experts have a degree in special education.</p>
+        </div>
 
-      <div class="nxt-stg">
-        <div class="icon2"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
-        <span class="who">24/7 Tutor Availability</span>
-        <p class="wow">Our tutors are always available to respond as quickly as possible for you.</p>
-      </div>
+        <div class="nxt-stg">
+            <div class="icon2"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+            <span class="who">24/7 Tutor Availability</span>
+            <p class="wow">Our tutors are always available to respond as quickly as possible for you.</p>
+        </div>
 
-      <div class="nxt-stg">
-        <div class="icon3"><i class="fa fa-th-large" aria-hidden="true"></i></div>
-        <span class="who">Interactive Whiteboard</span>
-        <p class="wow">Our digital whiteboard equipped with video chat features.</p>
-      </div>
+        <div class="nxt-stg">
+            <div class="icon3"><i class="fa fa-th-large" aria-hidden="true"></i></div>
+            <span class="who">Interactive Whiteboard</span>
+            <p class="wow">Our digital whiteboard equipped with video chat features.</p>
+        </div>
 
-      <div class="nxt-stg">
-        <div class="icon4"><i class="fa fa-dollar" aria-hidden="true"></i></div>
-        <span class="who">Affordable Prices</span>
-        <p class="wow">Choose an expert tutor based on your budget and per hour.</p>
-      </div>
-    </section>
-
+        <div class="nxt-stg">
+            <div class="icon4"><i class="fa fa-dollar" aria-hidden="true"></i></div>
+            <span class="who">Affordable Prices</span>
+            <p class="wow">Choose an expert tutor based on your budget and per hour.</p>
+        </div>
+        </section>
+    </div>
     <!-- third content pair -->
     <section class="thd-cont" aria-label="scheduling">
       <div class="thd1">
-        <img class="thd2" src="img/original2.png" alt="scheduling" onerror="this.onerror=null;this.src='https://via.placeholder.com/420x320?text=Schedule'">
+        <img class="thd2" src="img/Group students Photos.jpeg" alt="scheduling" onerror="this.onerror=null;this.src='https://via.placeholder.com/420x320?text=Schedule'">
       </div>
 
       <div class="thd-cont1">
@@ -565,7 +1232,7 @@
       </div>
 
       <div class="thd1">
-        <img class="thd2" src="img/original3.png" alt="tutors" onerror="this.onerror=null;this.src='https://via.placeholder.com/420x320?text=Tutors'">
+        <img class="thd2" src="img/Woman in a video conference.jpeg" alt="tutors" onerror="this.onerror=null;this.src='https://via.placeholder.com/420x320?text=Tutors'">
       </div>
     </section>
 
@@ -595,15 +1262,32 @@
 
     <!-- testimonials -->
     <section class="sth-cont" aria-label="testimonials">
-      <div class="sth">
-        <span class="sth1">Our Testimonials</span><br><br>
-        <span class="sth2">What Our Students Say About Us</span><br>
-      </div>
-
+  <div class="sth">
+    <span class="sth1">Our Testimonials</span><br><br>
+    <span class="sth2">What Our Students Say About Us</span><br>
+  </div>
+  
+  <div class="testimonials-wrapper">
+    
+    <!-- Box 1 -->
+    <div class="testimonial-box">
       <div class="sth3">
-        <img class="reduce" src="img/original4.png" alt="testimonials" onerror="this.onerror=null;this.src='https://via.placeholder.com/260x260?text=Testimonial'">
+        <img class="reduce" src="img/A Student Pensive guy.jpeg" alt="testimonials" onerror="this.onerror=null;this.src='https://via.placeholder.com/120x120?text=Student'">
       </div>
-
+      <div class="svth">
+        <span class="svth1">David Stewart</span><br>
+        <span class="svth2">Student at college</span><br>
+        <span class="svth3">5 Star</span><br>
+        <div class="svth4">
+          <span>As a student of this online education website, i can confidently say that it has been an incredible experience. The platform is user-friendly and the courses are well structured, making it easy for me to learn at my own pace.</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="testimonial-box">
+      <div class="sth3">
+        <img class="reduce" src="img/girl student.jpeg" alt="testimonials" onerror="this.onerror=null;this.src='https://via.placeholder.com/120x120?text=Student'">
+      </div>
       <div class="svth">
         <span class="svth1">Albert Monica</span><br>
         <span class="svth2">Student at college</span><br>
@@ -612,12 +1296,26 @@
           <span>As a student of this online education website, i can confidently say that it has been an incredible experience. The platform is user-friendly and the courses are well structured, making it easy for me to learn at my own pace.</span>
         </div>
       </div>
-    </section>
-
-
+    </div>
+    <div class="testimonial-box">
+      <div class="sth3">
+        <img class="reduce" src="img/image of Young indian.jpeg" alt="testimonials" onerror="this.onerror=null;this.src='https://via.placeholder.com/120x120?text=Student'">
+      </div>
+      <div class="svth">
+        <span class="svth1">Rowan Singh</span><br>
+        <span class="svth2">Student at college</span><br>
+        <span class="svth3">5 Star</span><br>
+        <div class="svth4">
+          <span>As a student of this online education website, i can confidently say that it has been an incredible experience. The platform is user-friendly and the courses are well structured, making it easy for me to learn at my own pace.</span>
+        </div>
+      </div>
+    </div>    
+  </div>
+</section>
    
   </main>
-<section class="contained" aria-label="contact form" style="margin-top:32px; max-width:800px; flex-direction:row; gap:32px;">
+<div style="background-color:#fff3f2; padding: 30px;">
+<section class="contained" aria-label="contact form" style="margin-top:39px; max-width:1000px; flex-direction:row; gap:32px;">
     <div style="flex:1; min-width:240px;">
         <h2 style="font-family:'Montserrat',sans-serif; font-size:26px; color:#111; margin-bottom:10px;">Contact Us</h2>
         <form id="contactForm" style="width:100%; display:flex; flex-direction:column; gap:14px;">
@@ -629,9 +1327,11 @@
         </form>
     </div>
     <div class="img" style="flex:1; min-width:220px; display:flex; align-items:center; justify-content:center;">
-        <img src="img/cust.jpeg" alt="Contact illustration" style="width:92%; border-radius:14px; box-shadow:0 8px 24px rgba(10,10,30,0.06);" onerror="this.onerror=null;this.src='https://via.placeholder.com/320x320?text=Contact';">
+        <img src="img/Customer service representative _ Premium AI-generated image.jpeg" alt="Contact illustration" style="width:92%; border-radius:14px; box-shadow:0 8px 24px rgba(10,10,30,0.06);" onerror="this.onerror=null;this.src='https://via.placeholder.com/320x320?text=Contact';">
     </div>
 </section>
+</div>
+
 <footer role="contentinfo">
     <p>&copy; <span id="year"></span> All rights reserved.</p>
 </footer>
@@ -692,6 +1392,95 @@
             document.body.classList.add('show-focus-outline');
         }
     });
+    
+    // Intersection Observer for scroll animations
+const observerOptions = {
+  threshold: 0.15, // Trigger when 15% of element is visible
+  rootMargin: '0px 0px -50px 0px' // Trigger slightly before element enters viewport
+};
+
+// Function to animate counting numbers
+function animateCounter(element, target, duration = 2000) {
+  // Extract number from target (remove commas and +)
+  const numStr = target.replace(/[,+]/g, '');
+  const targetNum = parseInt(numStr);
+  const hasPlus = target.includes('+');
+  const hasComma = target.includes(',');
+  
+  const startTime = performance.now();
+  
+  function updateCounter(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // Easing function for smooth animation
+    const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+    const current = Math.floor(easeOutQuart * targetNum);
+    
+    // Format number with commas if original had them
+    let displayValue = hasComma ? current.toLocaleString() : current.toString();
+    
+    // Add + if original had it
+    if (hasPlus && progress === 1) {
+      displayValue += '+';
+    }
+    
+    element.textContent = displayValue;
+    
+    if (progress < 1) {
+      requestAnimationFrame(updateCounter);
+    }
+  }
+  
+  requestAnimationFrame(updateCounter);
+}
+
+// Create observer instance
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate');
+      
+      if (entry.target.classList.contains('stage2')) {
+        const counters = entry.target.querySelectorAll('.yes1');
+        counters.forEach((counter, index) => {
+          const target = counter.getAttribute('data-target') || counter.textContent;
+          if (!counter.getAttribute('data-target')) {
+            counter.setAttribute('data-target', target);
+          }
+          setTimeout(() => {
+            animateCounter(counter, target, 2000);
+          }, index * 200);
+        });
+      }
+    
+    }
+    else {
+      entry.target.classList.remove('animate');
+    }
+  });
+}, observerOptions);
+
+// Observe all sections that need scroll animations
+document.addEventListener('DOMContentLoaded', () => {
+  // Select all elements to animate
+  const elementsToAnimate = document.querySelectorAll(
+    '.thd-cont, .frth-cont, .fth-cont, .sth-cont, .stage2'
+  );
+  
+  // Start observing each element
+  elementsToAnimate.forEach(element => {
+    observer.observe(element);
+  });
+});
+
+
+
+    
+    
+    
+
+  
     (function(){
         emailjs.init('YOUR_USER_ID'); // Replace with your EmailJS user ID (public key)
     })();
